@@ -322,7 +322,7 @@ static const struct spi_ops_s g_sp2iops =
 #ifdef CONFIG_SPI_CALLBACK
   .registercallback  = stm32_spi2register,  /* provided externally */
 #else
-  .registercallback  = 0,  /* not implemented */
+  .registercallback  = 0,                   /* not implemented */
 #endif
 };
 
@@ -380,7 +380,7 @@ static const struct spi_ops_s g_sp3iops =
 #ifdef CONFIG_SPI_CALLBACK
   .registercallback  = stm32_spi3register,  /* provided externally */
 #else
-  .registercallback  = 0,  /* not implemented */
+  .registercallback  = 0,                   /* not implemented */
 #endif
 };
 
@@ -438,7 +438,7 @@ static const struct spi_ops_s g_sp4iops =
 #ifdef CONFIG_SPI_CALLBACK
   .registercallback  = stm32_spi4register,  /* provided externally */
 #else
-  .registercallback  = 0,  /* not implemented */
+  .registercallback  = 0,                   /* not implemented */
 #endif
 };
 
@@ -496,7 +496,7 @@ static const struct spi_ops_s g_sp5iops =
 #ifdef CONFIG_SPI_CALLBACK
   .registercallback  = stm32_spi5register,  /* provided externally */
 #else
-  .registercallback  = 0,  /* not implemented */
+  .registercallback  = 0,                   /* not implemented */
 #endif
 };
 
@@ -554,7 +554,7 @@ static const struct spi_ops_s g_sp6iops =
 #ifdef CONFIG_SPI_CALLBACK
   .registercallback  = stm32_spi6register,  /* provided externally */
 #else
-  .registercallback  = 0,  /* not implemented */
+  .registercallback  = 0,                   /* not implemented */
 #endif
 };
 
@@ -1640,8 +1640,6 @@ static void spi_exchange_nodma(FAR struct spi_dev_s *dev,
         }
     }
 }
-#endif /* !CONFIG_STM32F7_SPI_DMA || CONFIG_STM32F7_DMACAPABLE || CONFIG_STM32F7_SPI_DMATHRESHOLD */
-
 #endif /* !CONFIG_STM32F7_SPI_DMA || CONFIG_STM32F7_DMACAPABLE ||
         * CONFIG_STM32F7_SPI_DMATHRESHOLD
         */
@@ -1701,8 +1699,10 @@ static void spi_exchange(FAR struct spi_dev_s *dev, FAR const void *txbuffer,
     }
 
 #ifdef CONFIG_STM32F7_DMACAPABLE
-  if ((txbuffer && !stm32_dmacapable((uint32_t)txbuffer, nwords, priv->txccr)) ||
-      (rxbuffer && !stm32_dmacapable((uint32_t)rxbuffer, nwords, priv->rxccr)))
+  if ((txbuffer &&
+      !stm32_dmacapable((uint32_t)txbuffer, nwords, priv->txccr)) ||
+      (rxbuffer &&
+       !stm32_dmacapable((uint32_t)rxbuffer, nwords, priv->rxccr)))
     {
       /* Unsupported memory region fall back to non-DMA method. */
 
